@@ -24,18 +24,16 @@
     .email-link{color:#00eaff;font-weight:bold;text-decoration:none}
     .email-link:hover{text-decoration:underline;color:#66f2ff}
     .tag{background:#1b2147;padding:3px 8px;border-radius:8px;font-size:.8rem;margin:2px;display:inline-block}
-    .form-box{margin-top:12px;display:flex;gap:8px}
-    input,textarea{flex:1;padding:8px;border-radius:6px;border:none}
-    button{background:#00d4ff;color:#000;font-weight:bold;padding:8px 14px;border:none;border-radius:6px;cursor:pointer}
-    button:hover{background:#7c5cff;color:#fff}
-    .chat-message{background:#1b2147;padding:6px 10px;border-radius:8px;margin:4px 0}
+    input,textarea,button{padding:8px;margin:4px 0;border-radius:6px;border:none}
+    button{background:#00d4ff;color:#0f1221;font-weight:bold;cursor:pointer}
+    button:hover{background:#66f2ff}
+    .chat-msg{margin:6px 0;padding:8px;border-radius:6px;background:#1b2147}
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <img src="https://raw.githubusercontent.com/MKASHIVISHWANATH/<repo-name>/main/logo.png" 
-           alt="Team Sci-Ops Logo" class="logo">
+      <img src="https://raw.githubusercontent.com/MKASHIVISHWANATH/hacknow/main/logo.png" alt="Team Sci-Ops Logo" class="logo">
       <div class="header-text">
         <div class="team-title">🚀 Team Sci-Ops</div>
         <div class="tagline">Hackathon Collaboration Hub</div>
@@ -53,22 +51,21 @@
     <section id="ideas" class="card">
       <h1>Idea Board</h1>
       <div id="ideaList"></div>
-      <div class="form-box">
-        <input id="ideaTitle" placeholder="Project Title"/>
-        <input id="ideaOwner" placeholder="Owner"/>
-      </div>
-      <textarea id="ideaDesc" placeholder="Describe your idea..."></textarea>
-      <button onclick="submitIdea()">💡 Add Idea</button>
+      <h3>Add New Idea</h3>
+      <input id="ideaTitle" placeholder="Title"/><br/>
+      <textarea id="ideaDesc" placeholder="Description"></textarea><br/>
+      <input id="ideaOwner" placeholder="Your Name"/><br/>
+      <button onclick="submitIdea()">➕ Submit Idea</button>
     </section>
 
     <!-- Chat -->
     <aside id="chat" class="card">
       <h1>Chat</h1>
-      <div id="chatStream"></div>
-      <div class="form-box">
-        <input id="chatMsg" placeholder="Type a message..."/>
-        <button onclick="sendMessage()">Send</button>
-      </div>
+      <div id="chatStream">💬 Loading messages...</div>
+      <h3>Send Message</h3>
+      <input id="chatUser" placeholder="Your Name"/><br/>
+      <input id="chatText" placeholder="Type a message"/><br/>
+      <button onclick="sendMessage()">📨 Send</button>
     </aside>
 
     <!-- Team -->
@@ -80,90 +77,90 @@
 
   <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
-    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCStQRgkUrxyxPJdexfigwujwc53zTihDI",
       authDomain: "team-sci-ops.firebaseapp.com",
-      databaseURL: "https://team-sci-ops-default-rtdb.firebaseio.com",  // ✅ add this in Firebase console
+      databaseURL: "https://team-sci-ops-default-rtdb.firebaseio.com",
       projectId: "team-sci-ops",
-      storageBucket: "team-sci-ops.appspot.com",
+      storageBucket: "team-sci-ops.firebasestorage.app",
       messagingSenderId: "1044063550937",
       appId: "1:1044063550937:web:99a917039b299704b82dc8",
       measurementId: "G-M64SGZPMK0"
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const db = getDatabase(app);
 
-    // --- TEAM DATA (static for now) ---
+    // --- TEAM DATA (static) ---
     const team = [
-      {name:"M KASHI VISHWANATH", role:"Designer", email:"mkashi@karunya.edu.in"},
-      {name:"JACOB ASHIRWAD M P", role:"DevOps Engineer", email:"jacobashirwad@karunya.edu.in"},
-      {name:"KMDSSR JEFFREY", role:"Research Lead", email:"jeffrey@example.com"},
-      {name:"Balaji S", role:"Full Stack WebDevelopment", email:"balajis23@karunya.edu.in"},
-      {name:"Pydimukkala Mani Kumar", role:"ML Engineer", email:"pydimukkalamani@karunya.edu.in"}
+      {name:"M KASHI VISHWANATH",role:"Designer",email:"mkashi@karunya.edu.in",skills:["C/C++","Python","MATLAB","KiCAD","Proteus 8","AutoCAD"],links:["https://www.linkedin.com/in/m-kashi-vishwanath-7307b32a8","https://github.com/MKASHIVISHWANATH","https://kashivishwanath-portfolio.vercel.app/"]},
+      {name:"JACOB ASHIRWAD M P",role:"DevOps Engineer",email:"jacobashirwad@karunya.edu.in",skills:[],links:["https://www.linkedin.com/in/jacob-ashirwad07/","https://github.com/CipherSaber"]},
+      {name:"KMDSSR JEFFREY",role:"Research Lead",email:"kmdeva@karunya.edu.in",skills:[],links:["https://github.com/jeffrey-debug","https://www.linkedin.com/in/-jeffrey-6553102b5"]},
+      {name:"Balaji S",role:"Full Stack WebDevelopment",email:"balajis23@karunya.edu.in",skills:[],links:[]},
+      {name:"Pydimukkala Mani Kumar",role:"ML Engineer",email:"pydimukkalamani@karunya.edu.in",skills:[],links:["https://github.com/manikumarpydi","https://www.linkedin.com/in/balajikavi"]}
     ];
 
-    // --- RENDER TEAM ---
     function renderTeam(){
       const box=document.getElementById("teamList");
+      box.innerHTML="";
       team.forEach(m=>{
         const el=document.createElement("div");
         el.className="member";
         el.innerHTML=`<strong>${m.name}</strong> — ${m.role}
-          <div class="meta">📧 <a class="email-link" href="mailto:${m.email}">${m.email}</a></div>`;
+          <div class="meta">📧 <a class="email-link" href="mailto:${m.email}">${m.email}</a></div>
+          <div class="meta">Skills: ${m.skills.length?m.skills.join(", "):"—"}</div>
+          <div class="meta">Links: ${m.links.length?m.links.map(l=>`<a href="${l}" target="_blank">${l}</a>`).join(" · "):"—"}</div>`;
         box.appendChild(el);
       });
     }
-
-    // --- IDEA SUBMISSION ---
-    function submitIdea(){
-      const title=document.getElementById("ideaTitle").value.trim();
-      const owner=document.getElementById("ideaOwner").value.trim();
-      const desc=document.getElementById("ideaDesc").value.trim();
-      if(title && owner && desc){
-        push(ref(db,"ideas"),{
-          title, owner, desc, timestamp:Date.now()
-        });
-        document.getElementById("ideaTitle").value="";
-        document.getElementById("ideaOwner").value="";
-        document.getElementById("ideaDesc").value="";
-      }
-    }
-
-    // --- IDEA LISTENER ---
-    onChildAdded(ref(db,"ideas"), snap=>{
-      const i=snap.val();
-      const el=document.createElement("div");
-      el.className="idea";
-      el.innerHTML=`<strong>${i.title}</strong>
-        <div class="meta">by ${i.owner}</div>
-        <div>${i.desc}</div>`;
-      document.getElementById("ideaList").appendChild(el);
-    });
+    renderTeam();
 
     // --- CHAT ---
+    const chatRef = ref(db,"chat");
     function sendMessage(){
-      const msg=document.getElementById("chatMsg").value.trim();
-      if(msg){
-        push(ref(db,"chat"),{text:msg,timestamp:Date.now()});
-        document.getElementById("chatMsg").value="";
-      }
+      const user=document.getElementById("chatUser").value||"Anonymous";
+      const text=document.getElementById("chatText").value;
+      if(!text) return;
+      push(chatRef,{user,text,timestamp:Date.now()});
+      document.getElementById("chatText").value="";
     }
-    onChildAdded(ref(db,"chat"), snap=>{
-      const c=snap.val();
-      const el=document.createElement("div");
-      el.className="chat-message";
-      el.textContent="💬 "+c.text;
-      document.getElementById("chatStream").appendChild(el);
+    onValue(chatRef,(snap)=>{
+      const chat=document.getElementById("chatStream");
+      chat.innerHTML="";
+      snap.forEach(msg=>{
+        const data=msg.val();
+        chat.innerHTML+=`<div class="chat-msg"><b>${data.user}:</b> ${data.text}</div>`;
+      });
     });
 
-    // INIT
-    renderTeam();
+    // --- IDEAS ---
+    const ideaRef = ref(db,"ideas");
+    function submitIdea(){
+      const title=document.getElementById("ideaTitle").value;
+      const desc=document.getElementById("ideaDesc").value;
+      const owner=document.getElementById("ideaOwner").value||"Anonymous";
+      if(!title||!desc) return;
+      push(ideaRef,{title,desc,owner,timestamp:Date.now()});
+      document.getElementById("ideaTitle").value="";
+      document.getElementById("ideaDesc").value="";
+    }
+    onValue(ideaRef,(snap)=>{
+      const list=document.getElementById("ideaList");
+      list.innerHTML="";
+      snap.forEach(i=>{
+        const d=i.val();
+        list.innerHTML+=`<div class="idea"><strong>${d.title}</strong>
+          <div class="meta">by ${d.owner}</div>
+          <div>${d.desc}</div></div>`;
+      });
+    });
+
+    // Expose functions globally
+    window.sendMessage = sendMessage;
+    window.submitIdea = submitIdea;
   </script>
 </body>
 </html>
