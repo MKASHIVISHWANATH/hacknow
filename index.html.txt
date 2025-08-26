@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Team Sci-Ops — Hackathon Hub</title>
+  <style>
+    body{font-family:sans-serif;margin:0;background:#0f1221;color:#eaf0ff}
+    header{background:#151935;padding:16px;position:sticky;top:0;display:flex;align-items:center;justify-content:space-between}
+    .header-content{display:flex;align-items:center;gap:12px}
+    .logo{width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 0 8px #00d4ff}
+    .header-text{display:flex;flex-direction:column;text-align:left}
+    .team-title{font-size:1.8rem;font-weight:bold;color:#00d4ff;text-shadow:0 0 10px #7c5cff}
+    .tagline{font-size:1rem;color:#8ea0c0;margin-top:4px;font-style:italic}
+    nav{margin-left:auto}
+    nav a{color:#8ea0c0;margin:0 12px;text-decoration:none;font-weight:600}
+    nav a:hover{color:#fff}
+    main{max-width:1100px;margin:20px auto;padding:0 16px;display:grid;gap:20px}
+    @media(min-width:920px){main{grid-template-columns:1.2fr .8fr}}
+    .card{background:#151935;padding:16px;border-radius:12px}
+    h1{margin:0 0 8px}
+    .member,.idea{border:1px solid #243055;border-radius:10px;padding:12px;margin:8px 0;background:#131733}
+    .meta{font-size:.9rem;color:#8ea0c0;margin-top:4px}
+    .email-link{color:#00eaff;font-weight:bold;text-decoration:none}
+    .email-link:hover{text-decoration:underline;color:#66f2ff}
+    .tag{background:#1b2147;padding:3px 8px;border-radius:8px;font-size:.8rem;margin:2px;display:inline-block}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <!-- GitHub-ready logo (must be in the same folder as index.html) -->
+      <img src="logo.png" alt="Team Sci-Ops Logo" class="logo">
+      <div class="header-text">
+        <div class="team-title">🚀 Team Sci-Ops</div>
+        <div class="tagline">Hackathon Collaboration Hub</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#ideas">Ideas</a>
+      <a href="#team">Team</a>
+      <a href="#chat">Chat</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Ideas -->
+    <section id="ideas" class="card">
+      <h1>Idea Board</h1>
+      <div id="ideaList"></div>
+    </section>
+
+    <!-- Chat -->
+    <aside id="chat" class="card">
+      <h1>Chat</h1>
+      <div id="chatStream">💬 No messages yet. Start chatting once you open this in your browser!</div>
+    </aside>
+
+    <!-- Team -->
+    <section id="team" class="card">
+      <h1>Team Members</h1>
+      <div id="teamList"></div>
+    </section>
+  </main>
+
+  <script>
+  const team = [
+    {
+      name:"M KASHI VISHWANATH",
+      role:"Designer",
+      email:"mkashi@karunya.edu.in",
+      skills:["C/C++","Python","MATLAB","KiCAD","Proteus 8","AutoCAD"],
+      links:[
+        "https://www.linkedin.com/in/m-kashi-vishwanath-7307b32a8",
+        "https://github.com/MKASHIVISHWANATH",
+        "https://kashivishwanath-portfolio.vercel.app/"
+      ]
+    },
+    {
+      name:"JACOB ASHIRWAD M P",
+      role:"DevOps Engineer",
+      email:"jacobashirwad@karunya.edu.in",
+      skills:[],
+      links:[
+        "https://www.linkedin.com/in/jacob-ashirwad07/",
+        "https://github.com/CipherSaber"
+      ]
+    },
+    {
+      name:"KMDSSR JEFFREY",
+      role:"Research Lead",
+      email:"jeffrey@example.com",
+      skills:[],
+      links:[
+        "https://github.com/jeffrey-debug",
+        "https://www.linkedin.com/in/-jeffrey-6553102b5"
+      ]
+    },
+    {
+      name:"Balaji S",
+      role:"Full Stack WebDevelopment",
+      email:"balajis23@karunya.edu.in",
+      skills:[],
+      links:[]
+    },
+    {
+      name:"Pydimukkala Mani Kumar",
+      role:"ML Engineer",
+      email:"pydimukkalamani@karunya.edu.in",
+      skills:[],
+      links:[
+        "https://github.com/manikumarpydi",
+        "https://www.linkedin.com/in/balajikavi?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+      ]
+    }
+  ];
+
+  const ideas = [
+    {
+      title:"PS-1: LLMs to Detect Vulnerability in Open-Source Software",
+      desc:"LLM-based tool for vulnerability detection in software source code and generating mitigating measures.",
+      tags:["LLM","security","opensource"],
+      owner:"Pydimukkala Mani Kumar"
+    },
+    {
+      title:"PS-8: Emitter Location Enhancement",
+      desc:"Develop a solution to provide cross sensor localization enhancement based on reduction in the Ellipse Error Probable.",
+      tags:["signalprocessing","localization","research"],
+      owner:"KMDSSR JEFFREY"
+    }
+  ];
+
+  function renderTeam(){
+    const box=document.getElementById("teamList");
+    box.innerHTML="";
+    team.forEach(m=>{
+      const el=document.createElement("div");
+      el.className="member";
+      el.innerHTML=`<strong>${m.name}</strong> — ${m.role}
+        <div class="meta">📧 Email: <a class="email-link" href="mailto:${m.email}">${m.email}</a></div>
+        <div class="meta">Skills: ${m.skills.length?m.skills.join(", "):"—"}</div>
+        <div class="meta">Links: ${m.links.length?m.links.map(l=>`<a href="${l}" target="_blank">${l}</a>`).join(" · "):"—"}</div>`;
+      box.appendChild(el);
+    });
+  }
+
+  function renderIdeas(){
+    const box=document.getElementById("ideaList");
+    box.innerHTML="";
+    ideas.forEach(i=>{
+      const el=document.createElement("div");
+      el.className="idea";
+      el.innerHTML=`<strong>${i.title}</strong>
+        <div class="meta">by ${i.owner}</div>
+        <div>${i.desc}</div>
+        <div>${i.tags.map(t=>`<span class="tag">#${t}</span>`).join(" ")}</div>`;
+      box.appendChild(el);
+    });
+  }
+
+  renderTeam();
+  renderIdeas();
+  </script>
+</body>
+</html>
